@@ -1,51 +1,46 @@
-const currentQuestionContainer = document.querySelector('#current-question');
-const choicesContainer = document.querySelector('#choices-container');
-const pageBody = document.querySelector('body');
+const startBtnEl = document.querySelector('.start-btn');
 
-var questions = ['question 1', 'question 2', 'quesion 3', 'question 4'];
-var choices = [Array('a', 'b', 'c', 'd'), Array('e', 'f', 'g', 'h'), Array('i', 'j', 'k', 'l'), Array('m', 'n', 'o', 'p')];
+const question1 = document.getElementById('1');
+const question2 = document.getElementById('2');
+const question3 = document.getElementById('3');
+const question4 = document.getElementById('4');
+const question5 = document.getElementById('5');
 
-const createDiv = function() {
-    const questionDivEl = document.createElement('div');
-    questionDivEl.id = 'question-container';
-    pageBody.appendChild(questionDivEl);
+const questions = [question1, question2, question3, question4, question5];
 
-    let questionContainer = document.querySelector('#question-container');
+const startQuiz = function() {
+    question1.classList.remove('hidden');
+    startTimer();
+}
 
-    const createBtnEl = function() {
-        let answerId = 0;
-        for(let i = 0; i < choices.length; i++) {
-            for (let j = 0; j < choices[i].length; j++) {
-                const answerBtnEl = document.createElement('button');
-                answerBtnEl.id = answerId;
-                answerId++;
-        
-                answerBtnEl.innerHTML = `${choices[j]}`;
-                answerBtnEl.setAttribute
-                questionContainer.appendChild(answerBtnEl);
-            }
-        }
-    }
+const getQuestion2 = function() {
+    question1.className = 'hidden';
+    question2.classList.remove('hidden');
+}
 
-    const createQuestionEl = function() {
-        let questionId = 0;
-        for (let i = 0; i < questions.length; i++) {
-            const questionEl = document.createElement('h2');
-            questionEl.id = questionId;
-            questionId++;
+const checkAnswer = function(event) {
+    selectedAnswer = event.target.innerHTML;
+    console.log(selectedAnswer)
     
-            questionEl.innerHTML = `${questions[i]}`;
-            questionEl.setAttribute("hidden", "true");
-            questionContainer.appendChild(questionEl);
-        }
+    if(selectedAnswer === correctAnswer) {
+        getQuestion2();
     }
-
-    createQuestionEl();
-    createBtnEl();
 }
 
-const getCurrentQuestion = function() {
-
+const startTimer = function() {
+    const timer = document.querySelector(".timer");
+    let currentTime = 10;
+    
+    const countdown = setInterval(function(){
+        timer.innerHTML = `Time: ${currentTime--}`;
+        if (currentTime < 0) {
+            clearInterval(countdown);
+        }
+    }, 1000);
 }
 
-createDiv();
+question1.addEventListener('click', checkAnswer);
+
+startBtnEl.addEventListener('click', startQuiz);
+
+checkAnswer();
