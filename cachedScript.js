@@ -47,3 +47,7 @@ const createDiv = function() {
 const getCurrentQuestion = function() {
 
 }
+
+if(selectedAnswer === correctAnswer) {
+    getQuestion2();
+}
