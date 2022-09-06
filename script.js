@@ -27,17 +27,88 @@ const message5 = document.getElementById('25');
 const questions = [question1, question2, question3, question4, question5];
 const answers = [answer1, answer2, answer3, answer4, answer5];
 const messages = [message1, message2, message3, message4, message5];
+// let highscores = [];
+let questionNum = 0;
+
+const timer = document.querySelector(".timer");
+
+let currentAnswer = 0;
+let currentTime = 20;
+
+let capturedAnswers = [];
+let capturedScores = [];
 
 //starting the timer and calling the first question
 const startQuiz = function() {
     question1.classList.remove('hidden');
     startTimer();
+    // nextQuestion();
+}
+
+const setScore = function(){
+        let highscores = getScores();
+
+        let currentScore = currentTime
+
+        if (highscores === []){
+            highscores.push(currentScore);
+            highscores.sort();
+            highscores.reverse();
+        } 
+
+        for (i = 0; i < 9; i++) {
+            if (highscores[i] < currentScore) {
+                //remove lowest highscore
+                highscores.pop();
+                //add new highscore to the end
+                highscores.push(currentScore);
+                //sort the array (ascending)
+                highscores.sort();
+                //reorder (descending);
+                highscores.reverse();
+
+                return highscores;
+            }
+        }
+        
+        //loop through array and compare current score and highscores
+        //if current score is higher than any of the top 10 scores,
+        //update/replace/reorder accordingly
+        //return to local storage
+        localStorage.setItem("highscores", JSON.stringify(highscores));
+}
+
+const getScores = function() {
+    //get local storage array
+    let highscores = localStorage.getItem("highscores");
+
+    //create one if it doesnt exist
+    if (!highscores){ 
+        highscores = [];
+
+        return highscores;
+    } else { //otherwise compare current score to top 10
+        highscores = JSON.parse("highscores");
+        highscores.sort();
+        highscores.reverse();
+
+        return highscores;
+    }
 }
 
 const nextQuestion = function() {
-    for (let i = 0; i < questions.length; i++) {
-        let currentQuestionEl = questions[i];
-        let nextQuestionEl = questions[i + 1];
+    // for (let i = 0; i < questions.length; i++) {
+        
+        // if (questions[i] === question1) {
+        //     question1.classList.remove('hidden');
+        // }
+
+        // if (questions[i] === question2) {
+        //     question1.classList.add('hidden');
+        //     question2.classList.remove('hidden');
+        // }
+        let currentQuestionEl = questions[questionNum];
+        let nextQuestionEl = questions[questionNum + 1];
 
         currentQuestionEl.classList.add('hidden');
         nextQuestionEl.classList.remove('hidden');
@@ -45,57 +116,70 @@ const nextQuestion = function() {
         console.log(currentQuestionEl);
         console.log(nextQuestionEl);
 
-        return currentQuestionEl, nextQuestionEl
+        questionNum++;
+    //}
+
+    if (questionNum >= 5 || currentTime <= 0) {
+        setScore(); 
     }
-    checkAnswer();
-}
+};
 
 //checking selected answer against correct answer
 const checkAnswer = function(event) {
-    //capture selected answer
-    selectedAnswer = event.target.innerHTML; 
-    console.log(selectedAnswer)
-    
+        //capture selected answer
+        selectedAnswer = event.target.innerHTML; 
+        console.log(selectedAnswer)
+
     //get correct answer and current message container
-    for (let i = 0; i < questions.length; i++) {
-        let correctAnswer = answers[i];
-        console.log(correctAnswer);
+                let correctAnswer = answers[currentAnswer];
 
-        let currentMessageEl = messages[i];
-        console.log(currentMessageEl);
+                console.log(correctAnswer);
+    
+                let currentMessageEl = messages[currentAnswer];
+                console.log(currentMessageEl);
+    
+                //compare selected answer to correct answer
+                if (selectedAnswer === correctAnswer) {
+                    currentMessageEl.innerHTML = "Correct!";
+                    setTimeout(function() {
+                        nextQuestion(currentAnswer);
+                    }, 1000);
+                    capturedAnswers.push(correctAnswer);
+                    currentAnswer++;
+                } else {
+                    currentMessageEl.innerHTML = "Incorrect!";
+                    selectedAnswer = false;
+                    setTimeout(function() {
+                        nextQuestion(currentAnswer);
+                    }, 1000);
+                    capturedAnswers.push(correctAnswer);
+                    currentAnswer++;
+                }
 
-        //compare selected answer to correct answer
-        if (selectedAnswer === correctAnswer) {
-            currentMessageEl.innerHTML = "Correct!";
-            return nextQuestion();
-        } else {
-            currentMessageEl.innerHTML = "Incorrect!";
-            selectedAnswer = false;
-            return nextQuestion();
-        }
-        
-    }
+    selectedAnswer = '';
 }
 
 const startTimer = function() {
-    const timer = document.querySelector(".timer");
-    let currentTime = 20;
+
     
     const countdown = setInterval(function(){
         timer.innerHTML = `Time remaining: ` + currentTime--;
         
         if (!selectedAnswer) {
-            currentTime -= 1;
+            currentTime--;
         }
 
         if (currentTime < 0) {
             clearInterval(countdown);
-            return currentTime;
+            //return currentTime;
         }
     }, 1000);
 }
 
 question1.addEventListener('click', checkAnswer);
+question2.addEventListener('click', checkAnswer);
+question3.addEventListener('click', checkAnswer);
+question4.addEventListener('click', checkAnswer);
+question5.addEventListener('click', checkAnswer);
 
 startBtnEl.addEventListener('click', startQuiz);
-
