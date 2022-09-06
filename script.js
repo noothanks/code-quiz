@@ -56,7 +56,7 @@ const setScore = function(){
             highscores.reverse();
         } 
 
-        for (i = 0; i < 9; i++) {
+        for (i = 0; i < highscores[9]; i++) {
             if (highscores[i] < currentScore) {
                 //remove lowest highscore
                 highscores.pop();
@@ -74,7 +74,7 @@ const setScore = function(){
         //loop through array and compare current score and highscores
         //if current score is higher than any of the top 10 scores,
         //update/replace/reorder accordingly
-        //return to local storage
+        //update local storage
         localStorage.setItem("highscores", JSON.stringify(highscores));
 }
 
@@ -83,7 +83,7 @@ const getScores = function() {
     let highscores = localStorage.getItem("highscores");
 
     //create one if it doesnt exist
-    if (!highscores){ 
+    if (!highscores) { 
         highscores = [];
 
         return highscores;
@@ -97,16 +97,7 @@ const getScores = function() {
 }
 
 const nextQuestion = function() {
-    // for (let i = 0; i < questions.length; i++) {
-        
-        // if (questions[i] === question1) {
-        //     question1.classList.remove('hidden');
-        // }
 
-        // if (questions[i] === question2) {
-        //     question1.classList.add('hidden');
-        //     question2.classList.remove('hidden');
-        // }
         let currentQuestionEl = questions[questionNum];
         let nextQuestionEl = questions[questionNum + 1];
 
@@ -169,7 +160,7 @@ const startTimer = function() {
             currentTime--;
         }
 
-        if (currentTime < 0) {
+        if (currentTime < 0 || capturedAnswers.length >=  5) {
             clearInterval(countdown);
             //return currentTime;
         }
