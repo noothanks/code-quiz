@@ -38,36 +38,36 @@ let currentTime = 20;
 let capturedAnswers = [];
 let capturedScores = [];
 
+
 //starting the timer and calling the first question
 const startQuiz = function() {
-    question1.classList.remove('hidden');
     startTimer();
+    question1.classList.remove('hidden');
     // nextQuestion();
 }
 
 const setScore = function(){
         let highscores = getScores();
 
-        let currentScore = currentTime
-
-        if (highscores === []){
-            highscores.push(currentScore);
+        
+        if (true) {
+            highscores.push(currentTime);
             highscores.sort();
             highscores.reverse();
         } 
 
         for (i = 0; i < highscores[9]; i++) {
-            if (highscores[i] < currentScore) {
+            if (highscores[i] < currentTime) {
                 //remove lowest highscore
                 highscores.pop();
                 //add new highscore to the end
-                highscores.push(currentScore);
+                highscores.push(currentTime);
                 //sort the array (ascending)
                 highscores.sort();
                 //reorder (descending);
                 highscores.reverse();
 
-                return highscores;
+                //localStorage.setItem
             }
         }
         
@@ -108,9 +108,9 @@ const nextQuestion = function() {
         console.log(nextQuestionEl);
 
         questionNum++;
-    //}
 
-    if (questionNum >= 5 || currentTime <= 0) {
+        console.log(questionNum);
+    if (questionNum >= 4 || currentTime <= 0) {
         setScore(); 
     }
 };
