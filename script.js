@@ -1,5 +1,8 @@
 //create start btn
-const startBtnEl = document.querySelector('.start-btn');
+const startBtnEl = document.getElementById('startBtn');
+
+//highscores div
+const highscoresEl = document.querySelector('.highscores');
 
 //get question DOM elements
 const question1 = document.getElementById('1');
@@ -23,7 +26,11 @@ const message3 = document.getElementById('23');
 const message4 = document.getElementById('24');
 const message5 = document.getElementById('25');
 
-//save as arrays
+//misc DOM elements
+const headerEl = document.getElementById('headerEl');
+const showHighScoresBtn = document.getElementById('showHighScores');
+
+//save separated elements as arrays
 const questions = [question1, question2, question3, question4, question5];
 const answers = [answer1, answer2, answer3, answer4, answer5];
 const messages = [message1, message2, message3, message4, message5];
@@ -41,7 +48,10 @@ let capturedScores = [];
 
 //starting the timer and calling the first question
 const startQuiz = function() {
+
     startTimer();
+    headerEl.classList.add('header');
+    timer.classList.remove('hidden');
     question1.classList.remove('hidden');
     // nextQuestion();
 }
@@ -67,7 +77,7 @@ const setScore = function(){
                 //reorder (descending);
                 highscores.reverse();
 
-                //localStorage.setItem
+               return highscores;
             }
         }
         
@@ -88,11 +98,25 @@ const getScores = function() {
 
         return highscores;
     } else { //otherwise compare current score to top 10
-        highscores = JSON.parse("highscores");
-        highscores.sort();
-        highscores.reverse();
+        // highscores = JSON.parse("highscores");
+        // highscores.sort();
+        // highscores.reverse();
 
-        return highscores;
+        return JSON.parse(highscores);
+    }
+}
+
+const displayScores = function() {
+
+    let highscores = getScores();
+    
+    highscoresEl.classList.remove("hidden");
+
+    for (i=0; i<highscores.length; i++) {
+        const scoreEl = document.createElement("h3");
+
+        scoreEl.innerHTML = highscores[i]
+        highscoresEl.appendChild(scoreEl);
     }
 }
 
@@ -174,3 +198,4 @@ question4.addEventListener('click', checkAnswer);
 question5.addEventListener('click', checkAnswer);
 
 startBtnEl.addEventListener('click', startQuiz);
+showHighScoresBtn.addEventListener('click', displayScores);
