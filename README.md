@@ -28,7 +28,7 @@ https://noothanks.github.io/code-quiz/
 
 ## Screenshots
 
-(./assets/screenshot/screenshot.jpg)
+![ScreenShot](./assets/screenshot/screenshot.jpg)
 
 ## Lessons Learned
 
