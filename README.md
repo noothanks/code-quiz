@@ -26,6 +26,9 @@ CSS
 This project is currently deployed on GitHub Pages at the following link:
 https://noothanks.github.io/code-quiz/
 
+## Screenshots
+
+![App Screenshot](./assets/screenshot/screenshot.jpg)
 
 ## Lessons Learned
 
