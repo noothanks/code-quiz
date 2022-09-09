@@ -40,7 +40,7 @@ let questionNum = 0;
 const timer = document.querySelector(".timer");
 
 let currentAnswer = 0;
-let currentTime = 20;
+let currentTime = 500;
 
 let capturedAnswers = [];
 let capturedScores = [];
@@ -169,6 +169,7 @@ const checkAnswer = function(event) {
                     }, 1000);
                     capturedAnswers.push(correctAnswer);
                     currentAnswer++;
+                    currentTime -= 5;
                 }
 
     selectedAnswer = '';
@@ -180,9 +181,9 @@ const startTimer = function() {
     const countdown = setInterval(function(){
         timer.innerHTML = `Time remaining: ` + currentTime--;
         
-        if (!selectedAnswer) {
-            currentTime--;
-        }
+        // if (!selectedAnswer) {
+        //     currentTime--;
+        // }
 
         if (currentTime < 0 || capturedAnswers.length >=  5) {
             clearInterval(countdown);
